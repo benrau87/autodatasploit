@@ -98,6 +98,7 @@ mkdir datasploitDb
 mongod --dbpath datasploitDb &>> $logfile
 cd master
 pip install -r requirements.txt &>> $logfile
+mv config_sample.py config.py
 error_check 'Datasploit installed'
 
 print_status "${YELLOW}Starting webserver${NC}"
