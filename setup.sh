@@ -84,7 +84,7 @@ apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install python python-pip mongodb-org rabbitmq-server -y &>> $logfile
+apt-get install python python-pip mongodb-org rabbitmq-server linuxbrew-wrapper -y &>> $logfile
 error_check 'Packages installed'
 
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
