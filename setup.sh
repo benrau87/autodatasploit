@@ -90,7 +90,7 @@ print_status "${YELLOW}Installing apt packages${NC}"
 apt-get install python python-pip mongodb-org rabbitmq-server -y &>> $logfile
 error_check 'Packages installed'
 
-print_status "${YELLOW}Installing Datasploit${NC}"
+print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
 cd /etc/
 git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
 cd datasploit/
