@@ -72,9 +72,6 @@ fi
 ##BEGIN MAIN SCRIPT##
 #Pre checks: These are a couple of basic sanity checks the script does before proceeding.
 ##Depos add
-#this is a nice little hack I found in stack exchange to suppress messages during package installation.
-export DEBIAN_FRONTEND=noninteractive
-
 print_status "${YELLOW}Adding repos${NC}"
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 &>> $logfile
 echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list &>> $logfile
@@ -97,7 +94,8 @@ cd datasploit
 pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
 mkdir datasploitDb
-mongod --dbpath datasploitDb &>> $logfile
+mongod --dbpath datasploitDb &
+print_status "${YELLOW}Press Enter to continue${NC}"
 error_check 'Datasploit installed'
 
 print_status "${YELLOW}Starting webserver${NC}"
