@@ -74,3 +74,35 @@ fi
 ##Depos add
 #this is a nice little hack I found in stack exchange to suppress messages during package installation.
 export DEBIAN_FRONTEND=noninteractive
+
+print_status "${YELLOW}Adding repos${NC}"
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 &>> $logfile
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list &>> $logfile
+echo 'deb http://www.rabbitmq.com/debian/ testing main' |sudo tee /etc/apt/sources.list.d/rabbitmq.list &>> $logfile
+wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add - &>> $logfile
+error_check 'Repos added'
+
+print_status "${YELLOW}Updating sources${NC}"
+apt-get update &>> $logfile
+error_check 'Sources updated'
+
+print_status "${YELLOW}Installing apt packages${NC}"
+apt-get install python python-pip mongodb-org rabbitmq-server -y &>> $logfile
+error_check 'Packages installed'
+
+print_status "${YELLOW}Installing Datasploit${NC}"
+cd /etc/
+git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
+cd datasploit/
+mkdir datasploitDb
+mongod --dbpath datasploitDb &>> $logfile
+cd master
+pip install -r requirements.txt &>> $logfile
+error_check 'Datasploit installed'
+
+print_status "${YELLOW}Starting webserver${NC}"
+brew services restart mongodb &>> $logfile
+brew services restart rabbitmq &>> $logfile
+C_FORCE_ROOT=root celery -A core worker -l info --concurrency 20  &>> $logfile     
+python manage.py runserver 0.0.0.0:8000  
+
