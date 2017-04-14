@@ -93,12 +93,11 @@ error_check 'Packages installed'
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
 cd /etc/
 git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
-cd datasploit/master
+cd datasploit
 pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
-cd ..
 mkdir datasploitDb
-mongod --dbpath datasploitDb &
+mongod --dbpath datasploitDb &>> $logfile
 error_check 'Datasploit installed'
 
 print_status "${YELLOW}Starting webserver${NC}"
