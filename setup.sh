@@ -88,14 +88,14 @@ wget -O- https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sud
 echo 'deb https://packages.erlang-solutions.com/debian wheezy contrib' | sudo tee /etc/apt/sources.list.d/esl.list
 
 sudo apt-get update
-sudo apt-get install init-system-helpers socat esl-erlang
+sudo apt-get install init-system-helpers socat esl-erlang -y
 
 # continue with RabbitMQ installation as explained above
 wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
 echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list
 
 sudo apt-get update
-sudo apt-get install rabbitmq-server
+sudo apt-get install rabbitmq-server -y 
 error_check 'Repos added'
 
 print_status "${YELLOW}Updating sources${NC}"
