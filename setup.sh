@@ -95,7 +95,7 @@ cd /etc/
 git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
 cd datasploit/
 mkdir datasploitDb
-mongod --dbpath datasploitDb &>> $logfile
+mongod --dbpath datasploitDb &
 cd master
 pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
