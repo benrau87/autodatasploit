@@ -95,12 +95,4 @@ pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
 mkdir datasploitDb
 mongod --dbpath datasploitDb &
-print_status "${YELLOW}Press Enter to continue${NC}"
-error_check 'Datasploit installed'
-
-print_status "${YELLOW}Starting webserver${NC}"
-brew services restart mongodb &>> $logfile
-brew services restart rabbitmq &>> $logfile
-C_FORCE_ROOT=root celery -A core worker -l info --concurrency 20  &>> $logfile     
-python manage.py runserver 0.0.0.0:8000  
 
