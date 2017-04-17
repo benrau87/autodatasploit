@@ -102,7 +102,7 @@ error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
 apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential -y &>> $logfile
-pip install django celery django-celery
+pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 error_check 'Packages installed'
 
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
