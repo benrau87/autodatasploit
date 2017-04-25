@@ -101,7 +101,7 @@ apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential -y &>> $logfile
+apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat -y &>> $logfile
 pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 error_check 'Packages installed'
 
@@ -112,5 +112,9 @@ cd datasploit
 pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
 mkdir datasploitDb
-mongod --dbpath datasploitDb &
+mongod --dbpath datasploitDb 
+brew services restart mongodb 
+brew services restart rabbitmq
+C_FORCE_ROOT=root celery -A core worker -l info --concurrency 20       
+python manage.py runserver 0.0.0.0:8000  &
 
