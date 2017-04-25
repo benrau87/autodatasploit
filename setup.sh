@@ -93,7 +93,7 @@ wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-ke
 echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list &>> $logfile
 
 sudo apt-get update &>> $logfile
-sudo apt-get install rabbitmq-server -y  &>> $logfile
+sudo apt-get install rabbitmq-server erlang-diameter erlang-eldap -y  &>> $logfile
 error_check 'Repos added'
 
 print_status "${YELLOW}Updating sources${NC}"
