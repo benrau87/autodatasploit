@@ -93,7 +93,7 @@ apt-get update
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install rabbitmq-server python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers -y 
+apt-get -f install rabbitmq-server python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers -y 
 pip install django celery django-celery whois wad pymongo termcolor 
 error_check 'Packages installed'
 
