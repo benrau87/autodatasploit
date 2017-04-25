@@ -90,7 +90,7 @@ wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-ke
 echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list 
 
 print_status "${YELLOW}Updating sources${NC}"
-apt-get update 
+apt-get update && apt-get upgrade -y
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
