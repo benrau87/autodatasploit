@@ -85,23 +85,16 @@ echo 'deb http://ftp.debian.org/debian wheezy-backports main' | sudo tee /etc/ap
 wget -O- https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sudo apt-key add - &>> $logfile
 echo 'deb https://packages.erlang-solutions.com/debian wheezy contrib' | sudo tee /etc/apt/sources.list.d/esl.list &>> $logfile
 
-sudo apt-get update &>> $logfile
-sudo apt-get install init-system-helpers socat esl-erlang -y &>> $logfile
-
 # continue with RabbitMQ installation as explained above
 wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add - &>> $logfile
 echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list &>> $logfile
-
-sudo apt-get update &>> $logfile
-sudo apt-get install rabbitmq-server -y  &>> $logfile
-error_check 'Repos added'
 
 print_status "${YELLOW}Updating sources${NC}"
 apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat -y &>> $logfile
+apt-get install rabbitmq-server python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers -y &>> $logfile
 pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 error_check 'Packages installed'
 
