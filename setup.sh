@@ -80,6 +80,7 @@ echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb
 gpg --keyserver pgpkeys.mit.edu --recv-key 7638D0442B90D010 
 gpg -a --export 7638D0442B90D010 | sudo apt-key add -
 echo 'deb http://ftp.debian.org/debian wheezy-backports main' | sudo tee /etc/apt/sources.list.d/wheezy_backports.list 
+
 # Add Erlang Solutions repository to obtain esl-erlang
 wget -O- https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sudo apt-key add - 
 echo 'deb https://packages.erlang-solutions.com/debian wheezy contrib' | sudo tee /etc/apt/sources.list.d/esl.list 
@@ -93,7 +94,7 @@ apt-get update
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get -f install rabbitmq-server python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers -y 
+apt-get -f install  python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers rabbitmq-server -y 
 pip install django celery django-celery whois wad pymongo termcolor 
 error_check 'Packages installed'
 
