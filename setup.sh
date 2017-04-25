@@ -73,36 +73,43 @@ fi
 #Pre checks: These are a couple of basic sanity checks the script does before proceeding.
 ##Depos add
 print_status "${YELLOW}Adding repos${NC}"
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 &>> $logfile
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list &>> $logfile
 
 # Add Debian Wheezy backports repository to obtain init-system-helpers
-gpg --keyserver pgpkeys.mit.edu --recv-key 7638D0442B90D010 
-gpg -a --export 7638D0442B90D010 | sudo apt-key add -
-echo 'deb http://ftp.debian.org/debian wheezy-backports main' | sudo tee /etc/apt/sources.list.d/wheezy_backports.list 
+gpg --keyserver pgpkeys.mit.edu --recv-key 7638D0442B90D010 &>> $logfile
+gpg -a --export 7638D0442B90D010 | sudo apt-key add - &>> $logfile
+echo 'deb http://ftp.debian.org/debian wheezy-backports main' | sudo tee /etc/apt/sources.list.d/wheezy_backports.list &>> $logfile
 
 # Add Erlang Solutions repository to obtain esl-erlang
-wget -O- https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sudo apt-key add - 
-echo 'deb https://packages.erlang-solutions.com/debian wheezy contrib' | sudo tee /etc/apt/sources.list.d/esl.list 
+wget -O- https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sudo apt-key add - &>> $logfile
+echo 'deb https://packages.erlang-solutions.com/debian wheezy contrib' | sudo tee /etc/apt/sources.list.d/esl.list &>> $logfile
+
+sudo apt-get update &>> $logfile
+sudo apt-get install init-system-helpers socat esl-erlang -y &>> $logfile
 
 # continue with RabbitMQ installation as explained above
-wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add - 
-echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list 
+wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add - &>> $logfile
+echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list &>> $logfile
+
+sudo apt-get update &>> $logfile
+sudo apt-get install rabbitmq-server -y  &>> $logfile
+error_check 'Repos added'
 
 print_status "${YELLOW}Updating sources${NC}"
-apt-get update && apt-get upgrade -y
+apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get -f install  python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat init-system-helpers rabbitmq-server -y 
-pip install django celery django-celery whois wad pymongo termcolor 
+apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat -y &>> $logfile
+pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 error_check 'Packages installed'
 
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
 cd /etc/
-git clone https://github.com/upgoingstar/datasploit.git 
+git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
 cd datasploit
-pip install -r requirements.txt 
+pip install -r requirements.txt &>> $logfile
 mv config_sample.py config.py
 mkdir datasploitDb
 mongod --dbpath datasploitDb 
@@ -110,4 +117,3 @@ brew services restart mongodb
 brew services restart rabbitmq
 C_FORCE_ROOT=root celery -A core worker -l info --concurrency 20       
 python manage.py runserver 0.0.0.0:8000  &
-
