@@ -95,9 +95,9 @@ apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install init-system-helpers socat esl-erlang -y &>> $logfile
-apt-get install rabbitmq-server erlang-diameter erlang-eldap -y  &>> $logfile
-apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential erlang-nox esl-erlang socat -y &>> $logfile
+apt-get install init-system-helpers socat erlang -y &>> $logfile
+apt-get install rabbitmq-server -y  &>> $logfile
+apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential -y &>> $logfile
 error_check 'Packages installed'
 
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
