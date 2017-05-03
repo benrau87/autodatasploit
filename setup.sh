@@ -104,6 +104,7 @@ print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
 cd /etc/
 git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
 cd datasploit
+pip install tweepy
 pip install -r requirements.txt &>> $logfile
 #pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 mv config_sample.py config.py
