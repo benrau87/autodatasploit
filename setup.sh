@@ -95,16 +95,17 @@ apt-get update &>> $logfile
 error_check 'Sources updated'
 
 print_status "${YELLOW}Installing apt packages${NC}"
-apt-get install init-system-helpers socat erlang -y &>> $logfile
+apt-get install init-system-helpers socat erlang whois -y &>> $logfile
 apt-get install rabbitmq-server -y  &>> $logfile
-apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential -y &>> $logfile
+apt-get install python python-pip mongodb-org linuxbrew-wrapper build-essential whois -y &>> $logfile
 error_check 'Packages installed'
 
 print_status "${YELLOW}Installing Datasploit and Python requirements${NC}"
 cd /etc/
 git clone https://github.com/upgoingstar/datasploit.git &>> $logfile
 cd datasploit
-pip install tweepy clearbit bs4 lxml
+git clone https://github.com/AliasIO/Wappalyzer
+pip install tweepy clearbit bs4 lxml pymongo python-Wappalyzer
 pip install -r requirements.txt &>> $logfile
 #pip install django celery django-celery whois wad pymongo termcolor &>> $logfile
 mv config_sample.py config.py
